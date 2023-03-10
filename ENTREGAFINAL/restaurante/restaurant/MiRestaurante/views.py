@@ -16,12 +16,13 @@ from django.contrib.auth.views import PasswordChangeView
 # Create your views here.
 @login_required
 def inicio(request):
-    mihtml= open("C:/Users/LTA/Desktop/ENTREGA3/restaurante/restaurant/MiRestaurante/templates/MiRestaurante/inicio.html")
+    mihtml= open("C:/Users/LTA/Desktop/ENTREGAFINAL/restaurante/restaurant/MiRestaurante/templates/MiRestaurante/inicio.html")
     plantilla= Template(mihtml.read())
     mihtml.close()
     miContexto= Context()
     documento= plantilla.render(miContexto)
     return HttpResponse(documento)
+
     
 def gastronomia(request):
     return render(request, "MiRestaurante/gastronomia.html")
@@ -53,7 +54,7 @@ def restauranteFormulario(request):
 
 def entradaFormulario(request):
     if request.method == "POST":
-        MiFormulario= EntradaFormulario(request.POST)
+        MiFormulario= RestauranteFormulario(request.POST)
         print(MiFormulario)
         if MiFormulario.is_valid:
             Informacion= MiFormulario.cleaned_data
@@ -62,7 +63,7 @@ def entradaFormulario(request):
             return render(request,"MiRestaurante/inicio.html")
         
     else:
-        MiFormulario= EntradaFormulario()
+        MiFormulario= RestauranteFormulario()
     return render(request, "MiRestaurante/RestauranteFormulario.html",{"MiFormulario": MiFormulario})
 
 def busquedaFormulario(request):
@@ -91,6 +92,25 @@ def eliminardatos(request, datos__nombre):
     plato= Entrada.objects.all()
     contexto= {"Entrada:":plato}
     return render(request, "MiRestaurante/BaseDeDatos.html", contexto)
+
+def editardatos(request, plato_nombre):
+    plato=Entrada.objects.all()
+    if request.method == "POST":
+        miFormulario= RestauranteFormulario(request.POST)
+        print(miFormulario)
+
+        if miFormulario.is_valid:
+            Informacion= miFormulario.cleaned_data
+            plato.plato= Informacion["Plato"]
+            plato.cantidad= Informacion["Cantidad"]
+            plato.bebida= Informacion["Bebida"]
+            plato.numero_de_mesa= Informacion["Numero de mesa"]
+            plato.save()
+            return render(request, "MiRestaurante/inicio.html")
+        
+        else:
+            miFormulario= RestauranteFormulario(initial={"Plato": plato.plato, "Cantidad": plato.cantidad, "Bebida": plato.bebida, "Numero de mesa": plato.numero_de_mesa})
+        return render(request, "MiRestaurante/editarplato.html", {"MiFormulario": miFormulario})
 
 class PlatoList(ListView):
     model= Entrada
@@ -171,7 +191,7 @@ def password_exitoso(request):
 
 
 
-def inicio(request):
+#def inicio(request):
     avatares= Avatar.objects.filter(user=request.user.id)
     return render(request, "MiRestaurante/inicio.html", {"url": avatares[0].imagen.url})
 
