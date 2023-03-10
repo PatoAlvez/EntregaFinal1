@@ -137,17 +137,17 @@ class PlatoDelete(DeleteView):
 def login_request(request):
     if request.method == "POST":
        form= AuthenticationForm(request, data= request.POST)
-       if form.is_valid:
-            usuario= form.cleaned_data.get("Username")
-            contraseña= form.cleaned_data.get("Password")
+       if form.is_valid():
+            usuario= form.cleaned_data["Username"]
+            contraseña= form.cleaned_data["Password"]
             user= authenticate(username=usuario, password=contraseña)
             if user is not None:
                 login(request, user)
                 return render(request,"MiRestaurante/inicio.html", {"Mensaje":f"Bienvenido {usuario}"})
             else:
                 return render(request,"MiRestaurante/inicio.html", {"Mensaje":"Error, datos incorrectos"})
-    else:
-        return render(request,"MiRestaurante/inicio.html", {"Mensaje":"Error"})
+       else:
+           return render(request,"MiRestaurante/inicio.html", {"Mensaje":"Error"})
     
     form= AuthenticationForm()
     return render(request,"MiRestaurante/login.html", {"form": form} )
@@ -158,7 +158,7 @@ def registro(request):
         if form.is_valid():
             username= form.cleaned_data ["Username"]
             form.save()
-            return render(request, "MiRestaurante/inicio.html", {"mensaje":"Usuario creado"})
+            return render(request, "MiRestaurante/register.html", {"mensaje":"Usuario creado"})
     else:
         form= UserRegisterForm()
 
