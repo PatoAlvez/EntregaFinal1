@@ -163,7 +163,7 @@ def registro(request):
     else:
         form= UserRegisterForm()
 
-    return render(request,"MiRestaurante/registro.html", {"form": form} )
+    return render(request,"MiRestaurante/inicio.html", {"form": form} )
 
 def editarperfil(request):
     usuario=request.user
