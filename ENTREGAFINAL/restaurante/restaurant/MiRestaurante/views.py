@@ -81,6 +81,7 @@ def buscar(request):
 
 def BaseDeDatos(request):
     plato= Entrada.objects.all()
+    #avatar = Avatar.objects.filter(user=request.user.id)
     contexto= {"Entrada:":plato}
     return render(request, "MiRestaurante/BaseDeDatos.html", contexto)
     
@@ -138,12 +139,12 @@ def login_request(request):
     if request.method == "POST":
        form= AuthenticationForm(request, data= request.POST)
        if form.is_valid():
-            usuario= form.cleaned_data["Username"]
-            contraseña= form.cleaned_data["Password"]
+            usuario= form.cleaned_data("username")
+            contraseña= form.cleaned_data("Password")
             user= authenticate(username=usuario, password=contraseña)
             if user is not None:
                 login(request, user)
-                return render(request,"MiRestaurante/inicio.html", {{"mensaje":usuario}})
+                return render(request,"MiRestaurante/inicio.html", {"mensaje":f"Bienvenido {usuario}"})
             else:
                 return render(request,"MiRestaurante/inicio.html", {"Mensaje":"Error, datos incorrectos"})
        else:
@@ -158,11 +159,11 @@ def registro(request):
         if form.is_valid():
             username= form.cleaned_data ["Username"]
             form.save()
-            return render(request, "MiRestaurante/inicio.html", {{"mensaje":username}})
+            return render(request, "MiRestaurante/inicio.html", {"mensaje":"Usuario creado"})
     else:
         form= UserRegisterForm()
 
-    return render(request,"MiRestaurante/login.html", {"form": form} )
+    return render(request,"MiRestaurante/registro.html", {"form": form} )
 
 def editarperfil(request):
     usuario=request.user
