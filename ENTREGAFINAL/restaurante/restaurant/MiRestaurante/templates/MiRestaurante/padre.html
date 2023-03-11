@@ -20,16 +20,16 @@
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'Inicio' %}">inicio</a>
-                <a class="navbar-brand" href="{% url 'Contacto' %}">contacto</a>
-                <a class="navbar-brand" href="{% url 'Gastronomia' %}">gastronomia</a>
-                <a class="navbar-brand" href="{% url 'Informacion' %}">informacion</a>
+                <a class="navbar-brand" href="{% url 'Inicio' %}">Inicio</a>
+                <a class="navbar-brand" href="{% url 'Contacto' %}">Contacto</a>
+                <a class="navbar-brand" href="{% url 'Gastronomia' %}">Gastronomia</a>
+                <a class="navbar-brand" href="{% url 'Informacion' %}">Informacion</a>
                 <a class="navbar-brand" href="{% url 'BaseDeDatos' %}">BaseDeDatos</a>
-                <a class="navbar-brand" href="{% url 'login' %}">login</a>
-                <a class="navbar-brand" href="{% url 'acercademi' %}">acercademi</a>
+                <a class="navbar-brand" href="{% url 'registro' %}">Registro</a>
+                <a class="navbar-brand" href="{% url 'acercademi' %}">Acerca De Mi</a>
                 <a class="btn btn-primary" href="#signup">Sign Up</a>
                 {% if not request.user.is_authenticated %}
-                <a class="btn btn-primary" href="{% url 'login' %}">INICIAR</a>
+                <a class="btn btn-primary" href="{% url 'login' %}">LOGIN</a>
                 <!--<a class="btn btn-primary" href="#NADAAUN">INICIAR</a>-->
                 {% endif %}
                 

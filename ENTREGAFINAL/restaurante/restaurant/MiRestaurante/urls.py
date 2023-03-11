@@ -22,7 +22,7 @@ urlpatterns = [
     path('platoupdate', views.PlatoUpdate.as_view(), name="Edit"),
     path('platodelete', views.PlatoDelete.as_view(), name="Delete"),
     path("login", views.login_request, name="login"),
-    path("register", views.registro, name="Registro"),
+    path("registro", views.registro, name="registro"),
     path("logout", LogoutView.as_view(template_name= "MiRestaurante/logout.html"), name="Logout"),
     path("editarperfil", views.editarperfil, name="editarperfil"),
     #path("agregarAvatar", views.agregarAvatar, name="AgregarAvatar"),

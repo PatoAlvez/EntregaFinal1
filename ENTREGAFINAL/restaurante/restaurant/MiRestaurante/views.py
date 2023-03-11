@@ -54,7 +54,7 @@ def restauranteFormulario(request):
 
 def entradaFormulario(request):
     if request.method == "POST":
-        MiFormulario= RestauranteFormulario(request.POST)
+        MiFormulario= EntradaFormulario(request.POST)
         print(MiFormulario)
         if MiFormulario.is_valid:
             Informacion= MiFormulario.cleaned_data
@@ -63,8 +63,8 @@ def entradaFormulario(request):
             return render(request,"MiRestaurante/inicio.html")
         
     else:
-        MiFormulario= RestauranteFormulario()
-    return render(request, "MiRestaurante/RestauranteFormulario.html",{"MiFormulario": MiFormulario})
+        MiFormulario= EntradaFormulario()
+    return render(request, "MiRestaurante/EntradaFormulario.html",{"MiFormulario": MiFormulario})
 
 def busquedaFormulario(request):
     return render (request,"MiRestaurante/busquedaFormulario.html")
@@ -72,7 +72,7 @@ def busquedaFormulario(request):
 def buscar(request):
     if request.GET["N_mesa"]:
         plato= request.GET["Plato"]
-        n_mesa= PlatoPrincipal.objects.filter(plato__icontains=plato)
+        n_mesa= Entrada.objects.filter(plato__icontains=plato)
         return render(request, "MiRestaurante/resultadosbusqueda.html", {"plato": plato, "n_mesa":n_mesa})
 
     else:
@@ -143,7 +143,7 @@ def login_request(request):
             user= authenticate(username=usuario, password=contraseña)
             if user is not None:
                 login(request, user)
-                return render(request,"MiRestaurante/inicio.html", {"Mensaje":f"Bienvenido {usuario}"})
+                return render(request,"MiRestaurante/inicio.html", {{"mensaje":usuario}})
             else:
                 return render(request,"MiRestaurante/inicio.html", {"Mensaje":"Error, datos incorrectos"})
        else:
@@ -158,7 +158,7 @@ def registro(request):
         if form.is_valid():
             username= form.cleaned_data ["Username"]
             form.save()
-            return render(request, "MiRestaurante/register.html", {"mensaje":"Usuario creado"})
+            return render(request, "MiRestaurante/inicio.html", {{"mensaje":username}})
     else:
         form= UserRegisterForm()
 
