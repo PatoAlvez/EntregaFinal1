@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import Template, Context
 from .forms import *
@@ -37,10 +37,41 @@ def contacto(request):
 def acercademi(request):
     return render(request, "MiRestaurante/acercademi.html") 
    
+def Entrada1(request):
+    if request.user.is_authenticated == True:
+        avatar = Avatar.objects.filter(user=request.user.id)
+        entrada1 = Entrada.objects.all()
+        context = {"Entrada":entrada1, "url":avatar[0].imagen.url}
+        return render(request, "MiRestaurante/inicio.html", context)
+    else:
+        entradas = Entrada.objects.all()
+        return render(request, "MiRestaurante/inicio.html", {"Entrada":entradas})
+
+def PlatoP(request):
+    if request.user.is_authenticated == True:
+        avatar = Avatar.objects.filter(user=request.user.id)
+        platoprincipal1 = PlatoPrincipal.objects.all()
+        context = {"Plato principal":PlatoP, "url":avatar[0].imagen.url}
+        return render(request, "MiRestaurante/inicio.html", context)
+    else:
+        platoprincipal2 = PlatoPrincipal.objects.all()
+        return render(request, "MiRestaurante/inicio.html", {"estadios":platoprincipal2})
+
+def Postres(request):
+    if request.user.is_authenticated == True:
+        avatar = Avatar.objects.filter(user=request.user.id)
+        postres = Postre.objects.all()
+        context = {"Postre":postres, "url":avatar[0].imagen.url}
+        return render(request, "MiRestaurante/inicio.html", context)
+    else:
+        postres1 = Postre.objects.all()
+        return render(request, "../templates/jugadores.html", {"jugadores":postres1})
+    
 def restauranteFormulario(request):
 
     if request.method == "POST":
         MiFormulario= RestauranteFormulario(request.POST)
+        platoimagen= request.FILES.get("txtImagen")
         print(MiFormulario)
         if MiFormulario.is_valid:
             Informacion= MiFormulario.cleaned_data
@@ -51,20 +82,7 @@ def restauranteFormulario(request):
     else:
         MiFormulario= RestauranteFormulario()
     return render (request, "MiRestaurante/RestauranteFormulario.html")
-
-def entradaFormulario(request):
-    if request.method == "POST":
-        MiFormulario= EntradaFormulario(request.POST)
-        print(MiFormulario)
-        if MiFormulario.is_valid:
-            Informacion= MiFormulario.cleaned_data
-            restaurante= Entrada (plato= Informacion["Plato"], n_mesa= Informacion ["N_Mesa"])
-            restaurante.save()
-            return render(request,"MiRestaurante/inicio.html")
-        
-    else:
-        MiFormulario= EntradaFormulario()
-    return render(request, "MiRestaurante/EntradaFormulario.html",{"MiFormulario": MiFormulario})
+ 
 
 def busquedaFormulario(request):
     return render (request,"MiRestaurante/busquedaFormulario.html")
@@ -72,7 +90,7 @@ def busquedaFormulario(request):
 def buscar(request):
     if request.GET["N_mesa"]:
         plato= request.GET["Plato"]
-        n_mesa= Entrada.objects.filter(plato__icontains=plato)
+        n_mesa= RestauranteFormulario.objects.filter(plato__icontains=plato)
         return render(request, "MiRestaurante/resultadosbusqueda.html", {"plato": plato, "n_mesa":n_mesa})
 
     else:
@@ -139,8 +157,8 @@ def login_request(request):
     if request.method == "POST":
        form= AuthenticationForm(request, data= request.POST)
        if form.is_valid():
-            usuario= form.cleaned_data("username")
-            contraseña= form.cleaned_data("Password")
+            usuario= form.cleaned_data.get("username")
+            contraseña= form.cleaned_data.get("Password")
             user= authenticate(username=usuario, password=contraseña)
             if user is not None:
                 login(request, user)

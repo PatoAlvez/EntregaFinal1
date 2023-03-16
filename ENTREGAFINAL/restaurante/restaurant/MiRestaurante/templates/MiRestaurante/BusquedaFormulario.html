@@ -1,15 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="/MiRestaurante/Buscar" method="GET">
-        <input type="Numero de Mesa" name="Plato">
-        <input type="Submit" value="Buscar">
-    </form>
-</body>
-</html>
+{% extends "MiRestaurante/padre.html" %}
+
+{% load static %}
+
+
+<h1> LISTADO DE PLATOS</h1>
+<table>
+    <tr>
+        <th>Entrada</th>
+        <th>Bebida</th>
+        <th> Imagen</th>
+        <th>Plato Principal</th>
+        <th>Bebida</th>
+        <th> Imagen</th>
+        <th>Numero de Mesa</th>
+    </tr>
+    {% for p in RestauranteFormulario %}
+    <tr>
+       <td>{{a.Entrada}}</td>
+       <td>{{a.Bebida}}</td>
+       <td>{{a.Plato.Principal}}</td>
+       <td>{{a.Bebida}}</td>
+       <td>{{a.Numero.de.Mesa}}</td>
+       <td>
+        <img src="{{a.imagen.url}}" width="50" height="50">
+       </td>
+       <td>
+        {% if a.imagen %}
+        <a href="{% url 'Eliminar' a.id %}">ELIMINAR</a>
+        <a href="{% url 'Modificar' a.id %}">MODIFICAR</a>
+        {% endif %}
+       </td>
+    </tr>
+
+    {% endfor %}
+    
+</table>

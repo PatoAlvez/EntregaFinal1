@@ -7,13 +7,36 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/RestauranteFormulario/" method="POST">{% csrf_token %}
+    <h1>FORMULARIO RESTAURANTE</h1>
+    <form action="/MiRestaurante/inicio" method="POST" enctype="multipart/form-data">{% csrf_token %}
         <table>
             {{ MiFormulario.as_table }}
         </table>
-        <p> Plato: <input type="text" name="Plato"></p>
-        <p> N_Mesa: <input type="number" name="N_Mesa"></p>
+        <p> Entrada: <input type="text" name="Plato"></p>
+        <p> Bebida: <input type="number" name="bebida"></p>
+        <label>Imagen</label>
+        <input type="file" name="txtImagen" id="txtImagen">
+        <br>
+        <p> Plato Principal: <input type="text" name="Plato"></p>
+        <p> Bebida: <input type="number" name="bebida"></p>
+        <label>Imagen</label>
+        <input type="file" name="txtImagen" id="txtImagen">
+        <br>
+        <p> Postre: <input type="text" name="Plato"></p>
+        <label>Imagen</label>
+        <input type="file" name="txtImagen" id="txtImagen">
+        <br>
+        {% for p in RestauranteFormulario %}
+        <li> {{p}}</li>
+        <button>
+            <a href= "{% url 'EliminarPlato' p.nombre %}"> ELIMINAR </a> 
+            <a href= "{% url 'EditarPlato' p.nombre %}"> EDITAR </a>
+        </button>
+    {% endfor %}  
+    
+    <a href="Plato"> Agregar otro plato </a> 
         <input type="submit" value="Enviar">
+        
 
 
     </form>
