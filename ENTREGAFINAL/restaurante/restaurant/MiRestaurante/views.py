@@ -14,7 +14,6 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.views import PasswordChangeView
 
 # Create your views here.
-@login_required
 def inicio(request):
     mihtml= open("C:/Users/LTA/Desktop/ENTREGAFINAL/restaurante/restaurant/MiRestaurante/templates/MiRestaurante/inicio.html")
     plantilla= Template(mihtml.read())
@@ -181,7 +180,7 @@ def registro(request):
     else:
         form= UserRegisterForm()
 
-    return render(request,"MiRestaurante/inicio.html", {"form": form} )
+    return render(request,"MiRestaurante/registro.html", {"form": form} )
 
 def editarperfil(request):
     usuario=request.user

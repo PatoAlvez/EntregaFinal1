@@ -26,9 +26,8 @@
                 <a class="navbar-brand" href="{% url 'Informacion' %}">Informacion</a>
                 <a class="navbar-brand" href="{% url 'restauranteFormulario' %}">RestauranteFormulario</a>
                 <a class="navbar-brand" href="{% url 'busquedaformulario' %}">Busqueda
-                <a class="navbar-brand" href="{% url 'registro' %}">Registro</a>
                 <a class="navbar-brand" href="{% url 'acercademi' %}">Acerca De Mi</a>
-                <a class="btn btn-primary" href="#signup">Sign Up</a>
+                <a class="btn btn-primary" href="{% url 'registro' %}">Sign Up</a>
                 {% if not request.user.is_authenticated %}
                 <a class="btn btn-primary" href="{% url 'login' %}">LOGIN</a>
                 <!--<a class="btn btn-primary" href="#NADAAUN">INICIAR</a>-->
