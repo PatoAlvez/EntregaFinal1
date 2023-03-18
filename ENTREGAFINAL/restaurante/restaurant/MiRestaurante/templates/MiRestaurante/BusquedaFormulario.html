@@ -14,12 +14,52 @@
         <th> Imagen</th>
         <th>Numero de Mesa</th>
     </tr>
-    {% for p in RestauranteFormulario %}
+    {% for p in entradaFormulario %}
     <tr>
        <td>{{a.Entrada}}</td>
        <td>{{a.Bebida}}</td>
-       <td>{{a.Plato.Principal}}</td>
+       <td>{{a.Numero.de.Mesa}}</td>
+       <td>
+        <img src="{{a.imagen.url}}" width="50" height="50">
+       </td>
+       <td>
+        {% if a.imagen %}
+        <a href="{% url 'Eliminar' a.id %}">ELIMINAR</a>
+        <a href="{% url 'Modificar' a.id %}">MODIFICAR</a>
+        {% endif %}
+       </td>
+    </tr>
+
+    {% endfor %}
+    
+</table>
+
+
+<table>
+    {% for p in platoprincipalFormulario %}
+    <tr>
+       <td>{{a.PlatoPrincipal}}</td>
        <td>{{a.Bebida}}</td>
+       <td>{{a.Numero.de.Mesa}}</td>
+       <td>
+        <img src="{{a.imagen.url}}" width="50" height="50">
+       </td>
+       <td>
+        {% if a.imagen %}
+        <a href="{% url 'Eliminar' a.id %}">ELIMINAR</a>
+        <a href="{% url 'Modificar' a.id %}">MODIFICAR</a>
+        {% endif %}
+       </td>
+    </tr>
+
+    {% endfor %}
+    
+</table>
+
+<table>
+    {% for p in postreFormulario %}
+    <tr>
+       <td>{{a.Postre}}</td>
        <td>{{a.Numero.de.Mesa}}</td>
        <td>
         <img src="{{a.imagen.url}}" width="50" height="50">

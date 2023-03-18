@@ -6,7 +6,7 @@ from MiRestaurante.models import *
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import RestauranteFormulario, UserRegisterForm
+from .forms import *
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
@@ -66,10 +66,10 @@ def Postres(request):
         postres1 = Postre.objects.all()
         return render(request, "../templates/jugadores.html", {"jugadores":postres1})
     
-def restauranteFormulario(request):
+def entradaFormulario(request):
 
     if request.method == "POST":
-        MiFormulario= RestauranteFormulario(request.POST)
+        MiFormulario= EntradaFormulario(request.POST)
         platoimagen= request.FILES.get("txtImagen")
         print(MiFormulario)
         if MiFormulario.is_valid:
@@ -79,24 +79,72 @@ def restauranteFormulario(request):
             return render(request,"MiRestaurante/inicio.html")
         
     else:
-        MiFormulario= RestauranteFormulario()
-    return render (request, "MiRestaurante/RestauranteFormulario.html")
+        MiFormulario= EntradaFormulario()
+    return render (request, "MiRestaurante/Entrada1Formulario.html")
+
+def platoprincipalFormulario(request):
+
+    if request.method == "POST":
+        MiFormulario= PlatoPrincipalFormulario(request.POST)
+        platoimagen= request.FILES.get("txtImagen")
+        print(MiFormulario)
+        if MiFormulario.is_valid:
+            Informacion= MiFormulario.cleaned_data
+            restaurante= PlatoPrincipal (plato= Informacion["Plato"], n_mesa= Informacion ["N_Mesa"])
+            restaurante.save()
+            return render(request,"MiRestaurante/inicio.html")
+        
+    else:
+        MiFormulario= PlatoPrincipalFormulario()
+    return render (request, "MiRestaurante/PlatoPrincipalForm.html")
+
+def postreFormulario(request):
+
+    if request.method == "POST":
+        MiFormulario= PostreFormulario(request.POST)
+        platoimagen= request.FILES.get("txtImagen")
+        print(MiFormulario)
+        if MiFormulario.is_valid:
+            Informacion= MiFormulario.cleaned_data
+            restaurante= Postre(plato= Informacion["Postre"], n_mesa= Informacion ["N_Mesa"])
+            restaurante.save()
+            return render(request,"MiRestaurante/inicio.html")
+        
+    else:
+        MiFormulario= PostreFormulario()
+    return render (request, "MiRestaurante/postreformulario.html")
  
-
-def busquedaFormulario(request):
-    return render (request,"MiRestaurante/busquedaFormulario.html")
-
-def buscar(request):
+def buscarentrada(request):
     if request.GET["N_mesa"]:
         plato= request.GET["Plato"]
-        n_mesa= RestauranteFormulario.objects.filter(plato__icontains=plato)
-        return render(request, "MiRestaurante/resultadosbusqueda.html", {"plato": plato, "n_mesa":n_mesa})
+        n_mesa= Entrada.objects.filter(plato__icontains=plato)
+        return render(request, "MiRestaurante/BusquedaFormulario.html", {"plato": plato, "n_mesa":n_mesa})
 
     else:
         respuesta= "No enviaste datos"
     return HttpResponse(respuesta)
 
-def BaseDeDatos(request):
+def buscarplatoprincipal(request):
+    if request.GET["N_mesa"]:
+        plato= request.GET["Plato"]
+        pedido= PlatoPrincipal.objects.filter(plato__icontains=plato)
+        return render(request, "MiRestaurante/BusquedaFormulario.html", {"plato": plato, "n_mesa":pedido})
+
+    else:
+        respuesta= "No enviaste datos"
+    return HttpResponse(respuesta)
+
+def buscarpostre(request):
+    if request.GET["N_mesa"]:
+        postre= request.GET["Plato"]
+        n_mesa= Postre.objects.filter(plato__icontains=postre)
+        return render(request, "MiRestaurante/BusquedaFormulario.html", {"postre": postre, "n_mesa":n_mesa})
+
+    else:
+        respuesta= "No enviaste datos"
+    return HttpResponse(respuesta)
+
+#def BaseDeDatos(request):
     plato= Entrada.objects.all()
     #avatar = Avatar.objects.filter(user=request.user.id)
     contexto= {"Entrada:":plato}
@@ -109,12 +157,28 @@ def eliminardatos(request, datos__nombre):
 
     plato= Entrada.objects.all()
     contexto= {"Entrada:":plato}
-    return render(request, "MiRestaurante/BaseDeDatos.html", contexto)
+    return render(request, "MiRestaurante/Entrada1Formulario.html", contexto)
+
+def eliminardatos(request, datos__nombre):
+    plato= PlatoPrincipal.objects.get(nombre=datos__nombre)
+    plato.delete()
+
+    plato= PlatoPrincipal.objects.all()
+    contexto= {"Entrada:":plato}
+    return render(request, "MiRestaurante/PlatoPrincipalForm.html", contexto)
+
+def eliminardatos(request, datos__nombre):
+    plato= Postre.objects.get(nombre=datos__nombre)
+    plato.delete()
+
+    plato= Postre.objects.all()
+    contexto= {"Entrada:":plato}
+    return render(request, "MiRestaurante/postreformulario.html", contexto)
 
 def editardatos(request, plato_nombre):
     plato=Entrada.objects.all()
     if request.method == "POST":
-        miFormulario= RestauranteFormulario(request.POST)
+        miFormulario= EntradaFormulario(request.POST)
         print(miFormulario)
 
         if miFormulario.is_valid:
@@ -127,8 +191,45 @@ def editardatos(request, plato_nombre):
             return render(request, "MiRestaurante/inicio.html")
         
         else:
-            miFormulario= RestauranteFormulario(initial={"Plato": plato.plato, "Cantidad": plato.cantidad, "Bebida": plato.bebida, "Numero de mesa": plato.numero_de_mesa})
-        return render(request, "MiRestaurante/editarplato.html", {"MiFormulario": miFormulario})
+            miFormulario= EntradaFormulario(initial={"Plato": plato.plato, "Cantidad": plato.cantidad, "Bebida": plato.bebida, "Numero de mesa": plato.numero_de_mesa})
+        return render(request, "MiRestaurante/BusquedaFormulario.html", {"MiFormulario": miFormulario})
+
+def editardatos(request, plato_nombre):
+    plato=PlatoPrincipal.objects.all()
+    if request.method == "POST":
+        miFormulario= PlatoPrincipalFormulario(request.POST)
+        print(miFormulario)
+
+        if miFormulario.is_valid:
+            Informacion= miFormulario.cleaned_data
+            plato.plato= Informacion["Plato"]
+            plato.cantidad= Informacion["Cantidad"]
+            plato.bebida= Informacion["Bebida"]
+            plato.numero_de_mesa= Informacion["Numero de mesa"]
+            plato.save()
+            return render(request, "MiRestaurante/inicio.html")
+        
+        else:
+            miFormulario= PlatoPrincipalFormulario(initial={"Plato": plato.plato, "Cantidad": plato.cantidad, "Bebida": plato.bebida, "Numero de mesa": plato.numero_de_mesa})
+        return render(request, "MiRestaurante/BusquedaFormulario.html", {"MiFormulario": miFormulario})
+    
+def editardatos(request, plato_nombre):
+    plato=Postre.objects.all()
+    if request.method == "POST":
+        miFormulario= PostreFormulario(request.POST)
+        print(miFormulario)
+
+        if miFormulario.is_valid:
+            Informacion= miFormulario.cleaned_data
+            plato.postre= Informacion["Postre"]
+            plato.cantidad= Informacion["Cantidad"]
+            plato.numero_de_mesa= Informacion["Numero de mesa"]
+            plato.save()
+            return render(request, "MiRestaurante/inicio.html")
+        
+        else:
+            miFormulario= PostreFormulario(initial={"Postre": plato.postre, "Cantidad": plato.cantidad, "Numero de mesa": plato.numero_de_mesa})
+        return render(request, "MiRestaurante/BusquedaFormulario.html", {"MiFormulario": miFormulario})    
 
 class PlatoList(ListView):
     model= Entrada

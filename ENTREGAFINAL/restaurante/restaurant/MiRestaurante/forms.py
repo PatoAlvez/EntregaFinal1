@@ -9,15 +9,23 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm, Password
 from .models import *
 
 
-class RestauranteFormulario(forms.Form):
+class EntradaFormulario(forms.Form):
+   plato=forms.CharField(label="Plato", max_length=40)
+   cantidad=forms.CharField(label="Cantidad", max_length=20)
+   bebida=forms.CharField(label="Bebid", max_length=40)
+   numero_de_mesa=forms.CharField(label="Numero de Mesa", max_length=5)
+
+class PlatoPrincipalFormulario(forms.Form):
    plato=forms.CharField(label="Plato", max_length=40)
    cantidad=forms.CharField(label="Cantidad", max_length=20)
    bebida=forms.CharField(label="Bebida", max_length=40)
-   platoPrincipal=forms.CharField(label="Plato", max_length=40)
-   cantidad=forms.CharField(label="Cantidad", max_length=20)
-   bebida=forms.CharField(label="Bebida", max_length=40)
-   Postres=forms.CharField(label="Postre", max_length=40)
    numero_de_mesa=forms.CharField(label="Numero de Mesa", max_length=5)
+
+class PostreFormulario(forms.Form):
+   postre=forms.CharField(label="Postre", max_length=40)
+   cantidad=forms.CharField(label="Cantidad", max_length=20)
+   numero_de_mesa=forms.CharField(label="Numero de Mesa", max_length=5)
+
 
 class UserRegisterForm(UserCreationForm):
     email= forms.EmailField
