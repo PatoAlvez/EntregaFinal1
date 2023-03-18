@@ -6,7 +6,7 @@ from MiRestaurante.models import *
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import *
+from MiRestaurante.forms import *
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
