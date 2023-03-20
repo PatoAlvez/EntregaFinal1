@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>FORMULARIO RESTAURANTE</h1>
+    <form action="/MiRestaurante/inicio" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        <table>
+            {{ MiFormulario.as_table }}
+        </table>
+        <p> Plato Principal: <input type="text" name="Plato"></p>
+        <p> Bebida: <input type="number" name="bebida"></p>
+        <p> Numero de Mesa: <input type="number" name="Numero de mesa"></p>
+        <label>Imagen</label>
+        <input type="file" name="txtImagen" id="txtImagen">
+        <br>
+        {% for p in platoprincipalFormulario %}
+        <li> {{p}}</li>
+        <button>
+            <a href= "{% url 'EliminarPlato' p.nombre %}"> ELIMINAR </a> 
+            <a href= "{% url 'EditarPlato' p.nombre %}"> EDITAR </a>
+        </button>
+    {% endfor %}  
+    
+    <a href="Plato"> Agregar otro plato </a> 
+        <input type="submit" value="Enviar">
+        
+
+
+    </form>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<p> Estas buscando: {{plato}} {{N_Mesa}}</p>
+
+{% if plato %}
+
+<ul>
+    {% for platos in plato %}
+        <li> {{platos.plato}} </li>
+        <li>{{platos.N_Mesa}}</li>
+    {% endfor %}
+        
+</ul>
+ {% endif %}

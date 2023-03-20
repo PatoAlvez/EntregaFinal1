@@ -1,0 +1,38 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block changed_content  %}
+
+{% if crear_estadio %}
+    <h1 style="display: flex; justify-content: center;"> Nuevo Plato Principal </h1>
+{% elif form %}
+    <h1 style="display: flex; justify-content: center;"> Editar Plato Principal </h1>
+{% endif %}
+
+    {% if crear_platoprincipal.errors %}
+    
+    <p style="color: red">Datos incorrectos, por favor revisar.</p>
+
+    {% endif %}
+
+    {% if crear_platoprincipal %}
+    <form style="display: flex; justify-content: center;" action="../nuevoEstadio/" method="POST" enctype="multipart/form-data">{% csrf_token %}
+    {% elif form %}
+    <form style="display: flex; justify-content: center;" action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+    {% endif %}
+    
+       <table>
+        {% if crear_platoprincipal %}
+            {{crear_platoprincipal.as_table}}
+        {% elif form %}
+            {{form.as_table}}
+        {% endif %}
+
+       </table><br>
+
+        <input type="submit" value="Enviar">
+
+    </form>
+    <p style="display: flex; justify-content: center;"></p>
+{% endblock %}
